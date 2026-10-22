@@ -1,0 +1,908 @@
+
+/* =========================
+   1. THIET LAP CHUNG
+   ========================= */
+:root {
+  --blue: #0756a5;
+  --blue-dark: #06396f;
+  --blue-light: #eaf4ff;
+  --text: #172b43;
+  --muted: #6c7a8c;
+  --border: #dce5ef;
+  --white: #ffffff;
+  --page-bg: #f5f8fc;
+  --shadow: 0 8px 24px rgba(16, 55, 99, 0.08);
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  margin: 0;
+  color: var(--text);
+  background: var(--page-bg);
+  font-family: Arial, Helvetica, sans-serif;
+  line-height: 1.6;
+}
+
+button,
+input {
+  font: inherit;
+}
+
+button,
+a {
+  -webkit-tap-highlight-color: transparent;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+button {
+  cursor: pointer;
+}
+
+.container {
+  width: min(1180px, calc(100% - 40px));
+  margin: 0 auto;
+}
+
+/* =========================
+   2. DAU TRANG VA LOGO
+   ========================= */
+.topbar {
+  color: #e8f3ff;
+  background: var(--blue-dark);
+  font-size: 12px;
+}
+
+.topbar-inner {
+  display: flex;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 7px 0;
+}
+
+.brand-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 28px;
+  padding-top: 22px;
+  padding-bottom: 22px;
+}
+
+.brand {
+  display: inline-flex;
+  align-items: center;
+  gap: 11px;
+  flex-shrink: 0;
+}
+
+.brand-mark {
+  display: grid;
+  width: 49px;
+  height: 49px;
+  place-items: center;
+  color: var(--white);
+  background: var(--blue);
+  border-radius: 12px 12px 12px 3px;
+  font-size: 29px;
+  font-weight: 800;
+}
+
+.brand-text {
+  color: var(--blue-dark);
+  font-size: 23px;
+  font-weight: 800;
+  line-height: 1.2;
+  letter-spacing: -0.5px;
+}
+
+.brand-text strong {
+  color: #ed8b21;
+}
+
+.brand-text small {
+  display: block;
+  margin-top: 5px;
+  color: var(--muted);
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: 1.3px;
+}
+
+/* =========================
+   3. O TIM KIEM
+   ========================= */
+.search-form {
+  display: flex;
+  width: min(380px, 100%);
+  overflow: hidden;
+  background: var(--white);
+  border: 1px solid var(--border);
+  border-radius: 9px;
+}
+
+.search-form:focus-within {
+  border-color: var(--blue);
+  box-shadow: 0 0 0 3px rgba(7, 86, 165, 0.1);
+}
+
+.search-form input {
+  width: 100%;
+  min-width: 0;
+  padding: 12px 14px;
+  color: var(--text);
+  border: 0;
+  outline: none;
+}
+
+.search-form button {
+  width: 52px;
+  color: var(--white);
+  background: var(--blue);
+  border: 0;
+  font-size: 27px;
+}
+
+.search-form button:hover {
+  background: var(--blue-dark);
+}
+
+/* =========================
+   4. NAVBAR VA MENU DA CAP
+   ========================= */
+.navbar {
+  position: relative;
+  z-index: 20;
+  color: var(--white);
+  background: var(--blue);
+  box-shadow: 0 3px 9px rgba(6, 57, 111, 0.13);
+}
+
+.nav-menu {
+  display: flex;
+  align-items: stretch;
+  gap: 0;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.nav-menu > li {
+  position: relative;
+}
+
+.nav-link {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  min-height: 49px;
+  padding: 12px 14px;
+  color: var(--white);
+  font-size: 13px;
+  font-weight: 700;
+  white-space: nowrap;
+  transition: background 0.2s ease;
+}
+
+.nav-link:hover,
+.nav-link:focus-visible {
+  color: var(--white);
+  background: var(--blue-dark);
+  outline: none;
+}
+
+.menu-arrow {
+  font-size: 15px;
+  opacity: 0.8;
+}
+
+.submenu {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  display: none;
+  min-width: 230px;
+  margin: 0;
+  padding: 7px 0;
+  list-style: none;
+  background: var(--white);
+  border: 1px solid var(--border);
+  border-radius: 0 0 9px 9px;
+  box-shadow: var(--shadow);
+}
+
+.submenu .nav-link {
+  min-height: 0;
+  padding: 11px 15px;
+  color: var(--text);
+  font-size: 13px;
+  white-space: normal;
+}
+
+.submenu .nav-link:hover,
+.submenu .nav-link:focus-visible {
+  color: var(--blue);
+  background: var(--blue-light);
+}
+
+.has-children:hover > .submenu,
+.has-children:focus-within > .submenu,
+.has-children.submenu-open > .submenu {
+  display: block;
+}
+
+/* Menu con cap sau, neu du lieu co nhieu cap */
+.submenu .submenu {
+  top: 0;
+  left: 100%;
+  border-radius: 8px;
+}
+
+.mobile-menu-toggle {
+  display: none;
+  padding: 12px 0;
+  color: var(--white);
+  background: transparent;
+  border: 0;
+  font-weight: 700;
+}
+
+/* =========================
+   5. NOI DUNG CHINH
+   ========================= */
+.main-content {
+  min-height: 55vh;
+  padding-top: 23px;
+  padding-bottom: 55px;
+}
+
+.breadcrumb {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 9px;
+  margin-bottom: 20px;
+  color: var(--muted);
+  font-size: 12px;
+}
+
+.breadcrumb span:first-child {
+  color: var(--blue);
+  font-weight: 700;
+}
+
+.welcome-banner {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  min-height: 200px;
+  overflow: hidden;
+  padding: 30px 36px;
+  color: var(--white);
+  background: linear-gradient(115deg, #06396f, #0877c9);
+  border-radius: 15px;
+  box-shadow: var(--shadow);
+}
+
+.eyebrow {
+  margin: 0 0 7px;
+  color: #68b9ff;
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 1.8px;
+}
+
+.welcome-banner h1 {
+  margin: 0 0 8px;
+  font-size: clamp(27px, 4vw, 39px);
+  line-height: 1.2;
+}
+
+.welcome-banner p:last-child {
+  max-width: 550px;
+  margin-bottom: 0;
+  color: #e0efff;
+  font-size: 14px;
+}
+
+.banner-symbol {
+  display: grid;
+  width: 130px;
+  height: 130px;
+  place-items: center;
+  flex-shrink: 0;
+  margin-left: 20px;
+  color: #ffffff;
+  border: 1px solid rgba(255, 255, 255, 0.32);
+  border-radius: 50%;
+  font-size: 49px;
+  font-weight: 800;
+  transform: rotate(-8deg);
+}
+
+.banner-symbol span {
+  color: #ffbd69;
+  font-size: 24px;
+}
+
+.news-section {
+  padding-top: 36px;
+  scroll-margin-top: 20px;
+}
+
+.section-heading {
+  display: flex;
+  align-items: end;
+  justify-content: space-between;
+  gap: 15px;
+  margin-bottom: 20px;
+  padding-bottom: 14px;
+  border-bottom: 1px solid var(--border);
+}
+
+.section-heading .eyebrow {
+  color: var(--blue);
+}
+
+.section-heading h2 {
+  margin: 0;
+  color: var(--blue-dark);
+  font-size: 26px;
+  line-height: 1.3;
+}
+
+.result-count {
+  padding: 5px 10px;
+  color: var(--blue);
+  background: var(--blue-light);
+  border-radius: 20px;
+  font-size: 12px;
+  white-space: nowrap;
+}
+
+.status-message {
+  padding: 14px 16px;
+  color: var(--muted);
+  background: var(--white);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+}
+
+.news-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 22px;
+}
+
+.news-card {
+  min-width: 0;
+  overflow: hidden;
+  background: var(--white);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  box-shadow: 0 3px 12px rgba(16, 55, 99, 0.035);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.news-card:hover {
+  transform: translateY(-4px);
+  box-shadow: var(--shadow);
+}
+
+.news-image {
+  position: relative;
+  height: 205px;
+  overflow: hidden;
+  background: #e5eef8;
+}
+
+.news-image img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.35s ease;
+}
+
+.news-card:hover .news-image img {
+  transform: scale(1.04);
+}
+
+.image-placeholder {
+  display: grid;
+  width: 100%;
+  height: 100%;
+  place-items: center;
+  color: var(--blue);
+  font-weight: 800;
+  letter-spacing: 2px;
+}
+
+.category-label {
+  position: absolute;
+  bottom: 12px;
+  left: 12px;
+  max-width: calc(100% - 24px);
+  padding: 5px 10px;
+  overflow: hidden;
+  color: var(--white);
+  background: var(--blue);
+  border-radius: 5px;
+  font-size: 11px;
+  font-weight: 700;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.news-card-body {
+  padding: 17px;
+}
+
+.news-meta {
+  margin: 0 0 8px;
+  color: var(--muted);
+  font-size: 11px;
+}
+
+.news-card h3 {
+  display: -webkit-box;
+  overflow: hidden;
+  margin: 0 0 10px;
+  color: var(--text);
+  font-size: 17px;
+  line-height: 1.45;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 3;
+}
+
+.news-excerpt {
+  display: -webkit-box;
+  overflow: hidden;
+  min-height: 66px;
+  margin: 0 0 17px;
+  color: #596b80;
+  font-size: 13px;
+  line-height: 1.65;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 3;
+}
+
+.news-card-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  padding-top: 12px;
+  border-top: 1px solid #edf1f6;
+}
+
+.news-card-footer > span {
+  overflow: hidden;
+  color: var(--muted);
+  font-size: 11px;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.read-more {
+  flex-shrink: 0;
+  padding: 0;
+  color: var(--blue);
+  background: transparent;
+  border: 0;
+  font-size: 12px;
+  font-weight: 800;
+}
+
+.read-more:hover {
+  color: #e07812;
+}
+
+.empty-state {
+  padding: 38px 20px;
+  text-align: center;
+  background: var(--white);
+  border: 1px dashed var(--border);
+  border-radius: 12px;
+}
+
+.empty-state h3 {
+  margin-top: 0;
+}
+
+.empty-state p {
+  color: var(--muted);
+}
+
+.primary-button {
+  padding: 10px 16px;
+  color: var(--white);
+  background: var(--blue);
+  border: 0;
+  border-radius: 7px;
+}
+
+/* Hop thoai xem noi dung bai viet */
+.article-detail {
+  position: fixed;
+  z-index: 100;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  overflow-y: auto;
+  padding: 20px;
+  background: rgba(7, 28, 52, 0.72);
+}
+
+.article-detail-content {
+  position: relative;
+  width: min(700px, 100%);
+  max-height: 90vh;
+  overflow-y: auto;
+  padding: 30px;
+  background: var(--white);
+  border-radius: 13px;
+  box-shadow: var(--shadow);
+}
+
+.article-detail-content h2 {
+  margin: 0 0 12px;
+  color: var(--blue-dark);
+  line-height: 1.35;
+}
+
+.article-detail-content > p {
+  white-space: pre-line;
+}
+
+.article-detail-content a {
+  color: var(--blue);
+  font-weight: 700;
+}
+
+.close-detail {
+  position: absolute;
+  top: 10px;
+  right: 14px;
+  width: 35px;
+  height: 35px;
+  color: var(--text);
+  background: var(--blue-light);
+  border: 0;
+  border-radius: 50%;
+  font-size: 23px;
+}
+
+.demo-note {
+  color: #87611b;
+  font-size: 12px;
+}
+
+/* =========================
+   6. FOOTER
+   ========================= */
+.site-footer {
+  color: #dbe8f7;
+  background: #082b50;
+}
+
+.footer-grid {
+  display: grid;
+  grid-template-columns: 1.4fr 0.8fr 1fr 1fr;
+  gap: 34px;
+  padding-top: 42px;
+  padding-bottom: 38px;
+}
+
+.footer-brand {
+  margin-bottom: 15px;
+}
+
+.footer-brand .brand-mark {
+  color: var(--blue-dark);
+  background: #ffffff;
+}
+
+.footer-brand .brand-text {
+  color: var(--white);
+}
+
+.footer-about p,
+.footer-column p {
+  color: #bfd0e3;
+  font-size: 12px;
+  line-height: 1.8;
+}
+
+.footer-about .demo-note {
+  color: #ffd28a;
+}
+
+.footer-column h3 {
+  margin: 4px 0 15px;
+  color: var(--white);
+  font-size: 15px;
+}
+
+.footer-column h4 {
+  margin: 18px 0 8px;
+  color: var(--white);
+  font-size: 13px;
+}
+
+.footer-column > a,
+.footer-column > div > a {
+  display: block;
+  width: fit-content;
+  margin-bottom: 9px;
+  color: #bfd0e3;
+  font-size: 12px;
+}
+
+.footer-column a:hover,
+.footer-bottom a:hover {
+  color: #ffcb81;
+}
+
+.social-links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 13px;
+}
+
+.social-links a {
+  color: #dbe8f7;
+  font-size: 12px;
+}
+
+.footer-bottom {
+  background: #05213e;
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.footer-bottom-inner {
+  display: flex;
+  justify-content: space-between;
+  gap: 20px;
+  padding-top: 12px;
+  padding-bottom: 12px;
+}
+
+.footer-bottom p,
+.footer-bottom a {
+  margin: 0;
+  color: #bfd0e3;
+  font-size: 11px;
+}
+
+/* =========================
+   7. RESPONSIVE - TABLET
+   ========================= */
+@media (max-width: 1000px) {
+  .nav-link {
+    padding-right: 9px;
+    padding-left: 9px;
+    font-size: 12px;
+  }
+
+  .news-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .footer-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+/* =========================
+   8. RESPONSIVE - DIEN THOAI
+   ========================= */
+@media (max-width: 760px) {
+  .container {
+    width: min(100% - 28px, 600px);
+  }
+
+  .topbar-inner {
+    flex-direction: column;
+    gap: 2px;
+  }
+
+  .brand-row {
+    align-items: stretch;
+    flex-direction: column;
+    gap: 17px;
+    padding-top: 17px;
+    padding-bottom: 17px;
+  }
+
+  .brand-mark {
+    width: 43px;
+    height: 43px;
+    font-size: 25px;
+  }
+
+  .brand-text {
+    font-size: 21px;
+  }
+
+  .search-form {
+    width: 100%;
+  }
+
+  .mobile-menu-toggle {
+    display: block;
+  }
+
+  .nav-menu {
+    display: none;
+    align-items: stretch;
+    flex-direction: column;
+    padding-bottom: 8px;
+  }
+
+  .nav-menu.is-open {
+    display: flex;
+  }
+
+  .nav-menu > li {
+    width: 100%;
+  }
+
+  .nav-link {
+    justify-content: space-between;
+    min-height: 43px;
+    padding: 10px 12px;
+    white-space: normal;
+  }
+
+  .submenu,
+  .submenu .submenu {
+    position: static;
+    min-width: 0;
+    padding: 0 0 0 13px;
+    background: rgba(0, 0, 0, 0.12);
+    border: 0;
+    border-radius: 0;
+    box-shadow: none;
+  }
+
+  .submenu .nav-link {
+    color: #ffffff;
+    border-left: 2px solid rgba(255, 255, 255, 0.3);
+  }
+
+  .submenu .nav-link:hover,
+  .submenu .nav-link:focus-visible {
+    color: #ffffff;
+    background: rgba(255, 255, 255, 0.12);
+  }
+
+  .welcome-banner {
+    min-height: 175px;
+    padding: 24px 20px;
+    border-radius: 11px;
+  }
+
+  .welcome-banner h1 {
+    font-size: 28px;
+  }
+
+  .welcome-banner p:last-child {
+    font-size: 12px;
+  }
+
+  .banner-symbol {
+    width: 66px;
+    height: 66px;
+    margin-left: 10px;
+    font-size: 25px;
+  }
+
+  .banner-symbol span {
+    font-size: 14px;
+  }
+
+  .news-section {
+    padding-top: 28px;
+  }
+
+  .section-heading h2 {
+    font-size: 22px;
+  }
+
+  .news-grid {
+    grid-template-columns: 1fr;
+    gap: 17px;
+  }
+
+  .news-card {
+    display: grid;
+    grid-template-columns: 120px minmax(0, 1fr);
+  }
+
+  .news-image {
+    height: 100%;
+    min-height: 180px;
+  }
+
+  .category-label {
+    right: 5px;
+    bottom: 7px;
+    left: 5px;
+    max-width: none;
+    padding: 4px;
+    font-size: 9px;
+    text-align: center;
+  }
+
+  .news-card-body {
+    padding: 12px;
+  }
+
+  .news-card h3 {
+    font-size: 14px;
+    -webkit-line-clamp: 3;
+  }
+
+  .news-excerpt {
+    min-height: 0;
+    margin-bottom: 10px;
+    font-size: 12px;
+    -webkit-line-clamp: 3;
+  }
+
+  .news-card-footer {
+    align-items: flex-start;
+    flex-direction: column;
+    gap: 7px;
+  }
+
+  .footer-grid {
+    grid-template-columns: 1fr;
+    gap: 23px;
+    padding-top: 32px;
+    padding-bottom: 28px;
+  }
+
+  .footer-column h3 {
+    margin-bottom: 10px;
+  }
+
+  .footer-bottom-inner {
+    align-items: flex-start;
+    flex-direction: column;
+    gap: 6px;
+  }
+
+  .article-detail-content {
+    padding: 25px 19px;
+  }
+}
+
+@media (max-width: 380px) {
+  .news-card {
+    grid-template-columns: 95px minmax(0, 1fr);
+  }
+
+  .news-image {
+    min-height: 190px;
+  }
+
+  .news-card-body {
+    padding: 10px;
+  }
+
+  .news-card h3 {
+    font-size: 13px;
+  }
+}
