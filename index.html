@@ -1,0 +1,530 @@
+
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Website tin tức - cập nhật thông tin theo chuyên mục.">
+  <title>Tin Mới 24h | Trang tin tức</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <header class="site-header">
+    <div class="topbar">
+      <div class="container topbar-inner">
+        <span id="todayText">Tin tức mỗi ngày</span>
+        <span>Thông tin nhanh chóng · Dễ tiếp cận</span>
+      </div>
+    </div>
+
+    <div class="container brand-row">
+      <a href="#" class="brand" id="homeLogo" aria-label="Trang chủ">
+        <span class="brand-mark">T</span>
+        <span class="brand-text">TIN MỚI <strong>24H</strong>
+          <small>ĐỌC TIN · NẮM BẮT · KẾT NỐI</small>
+        </span>
+      </a>
+
+      <form class="search-form" id="searchForm" role="search">
+        <input id="searchInput" type="search"
+          placeholder="Tìm kiếm tin tức..." aria-label="Tìm kiếm tin tức">
+        <button type="submit" aria-label="Tìm kiếm">⌕</button>
+      </form>
+    </div>
+
+    <nav class="navbar" aria-label="Điều hướng chính">
+      <div class="container">
+        <button class="mobile-menu-toggle" id="mobileMenuToggle"
+          aria-expanded="false" aria-controls="navMenu">
+          ☰ Danh mục
+        </button>
+        <ul class="nav-menu" id="navMenu">
+          <li class="nav-loading">Đang tải chuyên mục...</li>
+        </ul>
+      </div>
+    </nav>
+  </header>
+
+  <main class="container main-content">
+    <div class="breadcrumb">
+      <span>Trang chủ</span>
+      <span aria-hidden="true">/</span>
+      <span id="currentCategory">Tin mới nhất</span>
+    </div>
+
+    <section class="welcome-banner">
+      <div>
+        <p class="eyebrow">GÓC NHÌN MỖI NGÀY</p>
+        <h1>Tin tức nổi bật</h1>
+        <p>Cập nhật những thông tin đáng chú ý theo từng chuyên mục.</p>
+      </div>
+      <div class="banner-symbol" aria-hidden="true">24<span>H</span></div>
+    </section>
+
+    <section class="news-section" aria-labelledby="newsHeading">
+      <div class="section-heading">
+        <div>
+          <p class="eyebrow">ĐỌC GÌ HÔM NAY?</p>
+          <h2 id="newsHeading">Tin mới nhất</h2>
+        </div>
+        <span class="result-count" id="resultCount">Đang tải tin...</span>
+      </div>
+
+      <p class="status-message" id="statusMessage" role="status">
+        Đang tải dữ liệu bài viết...
+      </p>
+
+      <div class="news-grid" id="newsGrid"></div>
+
+      <div class="empty-state" id="emptyState" hidden>
+        <h3>Chưa tìm thấy bài viết phù hợp</h3>
+        <p>Hãy thử từ khóa khác hoặc chọn một chuyên mục khác.</p>
+        <button class="primary-button" id="showAllButton">Xem tất cả tin</button>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container footer-grid">
+      <section class="footer-about">
+        <a href="#" class="brand footer-brand" id="footerLogo">
+          <span class="brand-mark">T</span>
+          <span class="brand-text">TIN MỚI <strong>24H</strong></span>
+        </a>
+        <p>
+          Website tin tức phục vụ mục đích học tập, thực hành HTML,
+          CSS, JavaScript và xử lý dữ liệu JSON.
+        </p>
+        <p class="demo-note">
+          Một số nội dung trên website là dữ liệu mẫu, chưa được xác minh
+          là bài báo thực tế.
+        </p>
+      </section>
+
+      <section class="footer-column">
+        <h3>Liên kết nhanh</h3>
+        <a href="#" class="footer-home">Trang chủ</a>
+        <a href="#newsHeading" id="footerLatest">Tin mới nhất</a>
+        <a href="#newsHeading" id="footerAll">Tất cả bài viết</a>
+      </section>
+
+      <section class="footer-column">
+        <h3>Chuyên mục</h3>
+        <div id="footerCategories">
+          <span>Đang tải chuyên mục...</span>
+        </div>
+      </section>
+
+      <section class="footer-column">
+        <h3>Liên hệ</h3>
+        <p>Email: <a href="mailto:contact@example.com">contact@example.com</a></p>
+        <p>Địa chỉ: Việt Nam</p>
+        <h4>Kết nối</h4>
+        <div class="social-links">
+          <a href="https://www.facebook.com/" target="_blank"
+             rel="noopener noreferrer">Facebook</a>
+          <a href="https://www.youtube.com/" target="_blank"
+             rel="noopener noreferrer">YouTube</a>
+        </div>
+      </section>
+    </div>
+
+    <div class="footer-bottom">
+      <div class="container footer-bottom-inner">
+        <p>© <span id="copyrightYear"></span> Tin Mới 24h · Website thực hành.</p>
+        <a href="#homeLogo">Lên đầu trang ↑</a>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    const CATEGORY_FILE = "categories.json";
+    const POSTS_FILE = "posts.json";
+
+    const navMenu = document.getElementById("navMenu");
+    const newsGrid = document.getElementById("newsGrid");
+    const statusMessage = document.getElementById("statusMessage");
+    const emptyState = document.getElementById("emptyState");
+    const resultCount = document.getElementById("resultCount");
+    const newsHeading = document.getElementById("newsHeading");
+    const currentCategory = document.getElementById("currentCategory");
+    const searchInput = document.getElementById("searchInput");
+    const mobileMenuToggle = document.getElementById("mobileMenuToggle");
+
+    let categories = [];
+    let posts = [];
+    let selectedCategory = "";
+    let searchKeyword = "";
+
+    // Đọc JSON từ LocalStorage trước; nếu chưa có thì tải file JSON.
+    async function loadData(storageKey, filePath, isCategoryFile) {
+      const cachedData = localStorage.getItem(storageKey);
+
+      if (cachedData) {
+        try {
+          const parsed = JSON.parse(cachedData);
+          if (isValidData(parsed, isCategoryFile)) return parsed;
+        } catch (error) {
+          console.warn("Dữ liệu LocalStorage không hợp lệ:", storageKey);
+        }
+      }
+
+      const response = await fetch(filePath);
+      if (!response.ok) {
+        throw new Error("Không thể tải " + filePath + ". Mã lỗi: " + response.status);
+      }
+
+      const data = await response.json();
+
+      if (!isValidData(data, isCategoryFile)) {
+        throw new Error("Cấu trúc dữ liệu trong " + filePath + " chưa đúng.");
+      }
+
+      localStorage.setItem(storageKey, JSON.stringify(data));
+      return data;
+    }
+
+    function isValidData(data, isCategoryFile) {
+      if (isCategoryFile) {
+        return data && Array.isArray(data.menu);
+      }
+      return Array.isArray(data);
+    }
+
+    function escapeHTML(value) {
+      return String(value ?? "").replace(/[&<>"']/g, character => ({
+        "&": "&amp;",
+        "<": "&lt;",
+        ">": "&gt;",
+        '"': "&quot;",
+        "'": "&#39;"
+      })[character]);
+    }
+
+    function flattenCategories(items, result = []) {
+      items.forEach(item => {
+        result.push(item);
+        if (Array.isArray(item.children)) {
+          flattenCategories(item.children, result);
+        }
+      });
+      return result;
+    }
+
+    function renderNavigation() {
+      navMenu.innerHTML = "";
+
+      const homeItem = document.createElement("li");
+      homeItem.innerHTML = '<a class="nav-link nav-home" href="#" data-home="true">⌂ Trang chủ</a>';
+      navMenu.appendChild(homeItem);
+
+      categories.forEach(category => {
+        const item = createMenuItem(category);
+        navMenu.appendChild(item);
+      });
+
+      navMenu.querySelectorAll("[data-category]").forEach(link => {
+        link.addEventListener("click", event => {
+          event.preventDefault();
+          const title = link.dataset.category;
+          selectCategory(title);
+          navMenu.classList.remove("is-open");
+          mobileMenuToggle.setAttribute("aria-expanded", "false");
+        });
+      });
+
+      navMenu.querySelectorAll("[data-home]").forEach(link => {
+        link.addEventListener("click", event => {
+          event.preventDefault();
+          selectCategory("");
+          searchInput.value = "";
+          searchKeyword = "";
+          navMenu.classList.remove("is-open");
+        });
+      });
+    }
+
+    function createMenuItem(category) {
+      const li = document.createElement("li");
+      li.className = "nav-item";
+
+      const hasChildren = Array.isArray(category.children) &&
+        category.children.length > 0;
+
+      // Các liên kết external mở trang nguồn; các chuyên mục lọc bài viết tại đây.
+      const isExternal = category.type === "external" && category.url;
+      const link = document.createElement("a");
+      link.className = "nav-link";
+      link.textContent = category.title || "Chuyên mục";
+      link.href = isExternal ? category.url : "#";
+      link.dataset.category = category.title || "";
+
+      if (isExternal) {
+        link.target = "_blank";
+        link.rel = "noopener noreferrer";
+        link.removeAttribute("data-category");
+      }
+
+      li.appendChild(link);
+
+      if (hasChildren) {
+        li.classList.add("has-children");
+        link.setAttribute("aria-haspopup", "true");
+        link.setAttribute("aria-expanded", "false");
+
+        const arrow = document.createElement("span");
+        arrow.className = "menu-arrow";
+        arrow.textContent = "⌄";
+        link.appendChild(arrow);
+
+        const submenu = document.createElement("ul");
+        submenu.className = "submenu";
+
+        category.children.forEach(child => {
+          submenu.appendChild(createMenuItem(child));
+        });
+
+        li.appendChild(submenu);
+
+        link.addEventListener("click", event => {
+          // Trên điện thoại, lần bấm đầu mở menu con.
+          if (window.matchMedia("(max-width: 760px)").matches) {
+            event.preventDefault();
+            const isOpen = li.classList.toggle("submenu-open");
+            link.setAttribute("aria-expanded", String(isOpen));
+          }
+        });
+      }
+
+      return li;
+    }
+
+    function selectCategory(title) {
+      selectedCategory = title;
+      renderPosts();
+
+      const heading = title ? "Tin: " + title : "Tin mới nhất";
+      newsHeading.textContent = heading;
+      currentCategory.textContent = title || "Tin mới nhất";
+      document.querySelector(".news-section").scrollIntoView({
+        behavior: "smooth",
+        block: "start"
+      });
+    }
+
+    function renderPosts() {
+      const filteredPosts = posts.filter(post => {
+        const categoryMatch = !selectedCategory ||
+          post.category === selectedCategory;
+
+        const searchableText = [
+          post.title, post.excerpt, post.content, post.category, post.author
+        ].join(" ").toLocaleLowerCase("vi");
+
+        const keywordMatch = !searchKeyword ||
+          searchableText.includes(searchKeyword.toLocaleLowerCase("vi"));
+
+        return categoryMatch && keywordMatch;
+      });
+
+      newsGrid.innerHTML = "";
+      resultCount.textContent = filteredPosts.length + " bài viết";
+      statusMessage.hidden = filteredPosts.length > 0;
+      statusMessage.textContent = "Không có bài viết phù hợp.";
+      emptyState.hidden = filteredPosts.length > 0;
+
+      filteredPosts.forEach((post, index) => {
+        const article = document.createElement("article");
+        article.className = "news-card";
+
+        const safeTitle = escapeHTML(post.title);
+        const safeCategory = escapeHTML(post.category);
+        const safeExcerpt = escapeHTML(post.excerpt);
+        const safeAuthor = escapeHTML(post.author || "Ban biên tập");
+        const safeDate = escapeHTML(post.publishedAt || "");
+        const safeImage = safeImageURL(post.image);
+        const imageHTML = safeImage
+          ? `<img src="${escapeHTML(safeImage)}" alt="${safeTitle}" loading="lazy">`
+          : '<div class="image-placeholder">TIN TỨC</div>';
+
+        article.innerHTML = `
+          <div class="news-image">
+            ${imageHTML}
+            <span class="category-label">${safeCategory}</span>
+          </div>
+          <div class="news-card-body">
+            <p class="news-meta">${safeDate}</p>
+            <h3>${safeTitle}</h3>
+            <p class="news-excerpt">${safeExcerpt}</p>
+            <div class="news-card-footer">
+              <span>${safeAuthor}</span>
+              <button class="read-more" type="button" data-post-index="${index}">
+                Đọc tóm tắt →
+              </button>
+            </div>
+          </div>
+        `;
+
+        const button = article.querySelector(".read-more");
+        button.addEventListener("click", () => {
+          const fullContent = post.content || post.excerpt || "Chưa có nội dung.";
+          const detail = document.createElement("div");
+          detail.className = "article-detail";
+          detail.innerHTML = `
+            <div class="article-detail-content" role="dialog" aria-modal="true"
+                 aria-label="${safeTitle}">
+              <button class="close-detail" type="button" aria-label="Đóng">×</button>
+              <p class="eyebrow">${safeCategory}</p>
+              <h2>${safeTitle}</h2>
+              <p class="news-meta">${safeDate} · ${safeAuthor}</p>
+              <p>${escapeHTML(fullContent)}</p>
+              <p class="demo-note">Nội dung hiển thị từ file JSON của bài tập.</p>
+              ${safeArticleURL(post.url)}
+            </div>
+          `;
+          document.body.appendChild(detail);
+          detail.querySelector(".close-detail").addEventListener("click", () => detail.remove());
+          detail.addEventListener("click", event => {
+            if (event.target === detail) detail.remove();
+          });
+        });
+
+        newsGrid.appendChild(article);
+      });
+    }
+
+    function safeImageURL(value) {
+      try {
+        const url = new URL(value);
+        if (url.protocol === "https:" || url.protocol === "http:") return url.href;
+      } catch (error) {}
+      return "";
+    }
+
+    function safeArticleURL(value) {
+      try {
+        const url = new URL(value);
+        if (url.protocol === "https:" && url.hostname === "dantri.com.vn") {
+          return `<p><a href="${escapeHTML(url.href)}" target="_blank" rel="noopener noreferrer">Mở bài viết trên Dân trí ↗</a></p>`;
+        }
+      } catch (error) {}
+      return "";
+    }
+
+    document.getElementById("searchForm").addEventListener("submit", event => {
+      event.preventDefault();
+      searchKeyword = searchInput.value.trim();
+      renderPosts();
+      newsGrid.scrollIntoView({ behavior: "smooth", block: "start" });
+    });
+
+    searchInput.addEventListener("input", () => {
+      searchKeyword = searchInput.value.trim();
+      renderPosts();
+    });
+
+    document.getElementById("showAllButton").addEventListener("click", () => {
+      selectedCategory = "";
+      searchKeyword = "";
+      searchInput.value = "";
+      newsHeading.textContent = "Tin mới nhất";
+      currentCategory.textContent = "Tin mới nhất";
+      renderPosts();
+    });
+
+    mobileMenuToggle.addEventListener("click", () => {
+      const isOpen = navMenu.classList.toggle("is-open");
+      mobileMenuToggle.setAttribute("aria-expanded", String(isOpen));
+    });
+
+    document.querySelectorAll(".footer-home").forEach(link => {
+      link.addEventListener("click", event => {
+        event.preventDefault();
+        selectCategory("");
+        window.scrollTo({ top: 0, behavior: "smooth" });
+      });
+    });
+
+    document.getElementById("footerLatest").addEventListener("click", event => {
+      event.preventDefault();
+      selectCategory("");
+    });
+
+    document.getElementById("footerAll").addEventListener("click", event => {
+      event.preventDefault();
+      selectCategory("");
+      searchKeyword = "";
+      searchInput.value = "";
+    });
+
+    document.getElementById("homeLogo").addEventListener("click", event => {
+      event.preventDefault();
+      selectCategory("");
+      searchKeyword = "";
+      searchInput.value = "";
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    });
+
+    document.getElementById("footerLogo").addEventListener("click", event => {
+      event.preventDefault();
+      selectCategory("");
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    });
+
+    async function initWebsite() {
+      document.getElementById("copyrightYear").textContent = new Date().getFullYear();
+      document.getElementById("todayText").textContent =
+        new Date().toLocaleDateString("vi-VN", {
+          weekday: "long", day: "2-digit", month: "2-digit", year: "numeric"
+        });
+
+      try {
+        const [categoryData, postData] = await Promise.all([
+          loadData("newsCategories", CATEGORY_FILE, true),
+          loadData("newsPosts", POSTS_FILE, false)
+        ]);
+
+        categories = categoryData.menu;
+        posts = postData;
+
+        renderNavigation();
+        renderPosts();
+        renderFooterCategories();
+        statusMessage.hidden = posts.length > 0;
+      } catch (error) {
+        console.error(error);
+        statusMessage.hidden = false;
+        statusMessage.textContent =
+          "Không tải được dữ liệu. Hãy kiểm tra tên và vị trí của categories.json, posts.json.";
+        resultCount.textContent = "Lỗi dữ liệu";
+        navMenu.innerHTML =
+          '<li class="nav-loading">Không tải được categories.json</li>';
+      }
+    }
+
+    function renderFooterCategories() {
+      const footer = document.getElementById("footerCategories");
+      footer.innerHTML = "";
+
+      const uniqueCategories = [...new Set(
+        flattenCategories(categories)
+          .filter(item => item.type === "category")
+          .map(item => item.title)
+      )].slice(0, 10);
+
+      uniqueCategories.forEach(title => {
+        const link = document.createElement("a");
+        link.href = "#newsHeading";
+        link.textContent = title;
+        link.addEventListener("click", event => {
+          event.preventDefault();
+          selectCategory(title);
+        });
+        footer.appendChild(link);
+      });
+    }
+
+    initWebsite();
+  </script>
+</body>
+</html>
