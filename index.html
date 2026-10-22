@@ -907,58 +907,55 @@
       });
     }
 
-    function openArticle(post) {
-      modalContent.replaceChildren();
+function openArticle(post) {
+  modalContent.replaceChildren();
 
-      const closeButton = modalClose.cloneNode(true);
-      closeButton.addEventListener("click", closeArticle);
-      modalContent.appendChild(closeButton);
+  const category = document.createElement("span");
+  category.className = "news-category";
+  category.textContent = post.category || "Tin tức";
 
-      const category = document.createElement("span");
-      category.className = "news-category";
-      category.textContent = post.category || "Tin tức";
+  const title = document.createElement("h2");
+  title.id = "modalTitle";
+  title.textContent = post.title || "Chi tiết bài viết";
 
-      const title = document.createElement("h2");
-      title.id = "modalTitle";
-      title.textContent = post.title || "Chi tiết bài viết";
+  const meta = document.createElement("p");
+  meta.className = "news-meta";
+  meta.textContent = [
+    post.author || "Ban biên tập",
+    safeDate(post.publishedAt)
+  ].filter(Boolean).join(" · ");
 
-      const meta = document.createElement("p");
-      meta.className = "news-meta";
-      meta.textContent = [
-        post.author || "Ban biên tập",
-        safeDate(post.publishedAt)
-      ].filter(Boolean).join(" · ");
+  modalContent.append(category, title, meta);
 
-      modalContent.append(category, title, meta);
+  if (post.image) {
+    const image = document.createElement("img");
+    image.src = post.image;
+    image.alt = post.title || "Ảnh bài viết";
+    image.style.marginBottom = "18px";
+    image.onerror = () => image.remove();
+    modalContent.appendChild(image);
+  }
 
-      if (post.image) {
-        const image = document.createElement("img");
-        image.src = post.image;
-        image.alt = post.title || "Ảnh bài viết";
-        image.style.marginBottom = "18px";
-        image.onerror = () => image.remove();
-        modalContent.appendChild(image);
-      }
+  const body = document.createElement("p");
+  body.className = "modal-body";
+  body.textContent =
+    post.content || post.excerpt || "Chưa có nội dung chi tiết.";
+  modalContent.appendChild(body);
 
-      const body = document.createElement("p");
-      body.className = "modal-body";
-      body.textContent = post.content || post.excerpt || "Chưa có nội dung chi tiết.";
-      modalContent.appendChild(body);
+  if (post.url && !post.url.includes("example.com")) {
+    const sourceLink = document.createElement("a");
+    sourceLink.href = post.url;
+    sourceLink.target = "_blank";
+    sourceLink.rel = "noopener noreferrer";
+    sourceLink.className = "read-more";
+    sourceLink.textContent = "Đọc bài tại nguồn →";
+    modalContent.appendChild(sourceLink);
+  }
 
-      if (post.url && !post.url.includes("example.com")) {
-        const sourceLink = document.createElement("a");
-        sourceLink.href = post.url;
-        sourceLink.target = "_blank";
-        sourceLink.rel = "noopener noreferrer";
-        sourceLink.className = "read-more";
-        sourceLink.textContent = "Đọc bài tại nguồn →";
-        modalContent.appendChild(sourceLink);
-      }
+  articleModal.classList.add("open");
+  document.body.style.overflow = "hidden";
+}
 
-      articleModal.classList.add("open");
-      document.body.style.overflow = "hidden";
-      modalClose = closeButton;
-    }
 
     function closeArticle() {
       articleModal.classList.remove("open");
